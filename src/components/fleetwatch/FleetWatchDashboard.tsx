@@ -45,10 +45,6 @@ export function FleetWatchDashboard() {
 
   useEffect(() => {
     loadReports();
-    const intervalId = setInterval(() => {
-      loadReports();
-    }, 10000);
-    return () => clearInterval(intervalId);
   }, [loadReports]);
 
   const handleMarkAsAttended = async (reportId: string) => {

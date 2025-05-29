@@ -24,9 +24,9 @@ export async function fetchVehicleReports(statusFilter?: ReportStatus): Promise<
     faultDescription: r.faultDescription,
     date: r.createdAt,
     status: r.status || 'pending',
-    photos: r.photos ? r.photos.map((filename: string) => `${API_BASE_URL}/uploads/${filename}`) : [],
-    ownerSignature: r.ownerSignature ? `${API_BASE_URL}/uploads/${r.ownerSignature}` : undefined,
-    technicianSignature: r.technicianSignature ? `${API_BASE_URL}/uploads/${r.technicianSignature}` : undefined,
+    photos: r.photos ? r.photos.map((filename: string) => `${API_BASE_URL}/uploads/${filename.split('/').pop()}`) : [],
+    ownerSignature: r.ownerSignature ? `${API_BASE_URL}/uploads/${r.ownerSignature.split('/').pop()}` : undefined,
+    technicianSignature: r.technicianSignature ? `${API_BASE_URL}/uploads/${r.technicianSignature.split('/').pop()}` : undefined,
     dataAiHint: r.dataAiHint || '',
   }));
 
@@ -58,9 +58,9 @@ export async function updateReportStatus(
     faultDescription: updatedReport.faultDescription,
     date: updatedReport.createdAt || updatedReport.date,
     status: updatedReport.status,    
-    photos: updatedReport.photos ? updatedReport.photos.map((filename: string) => `${API_BASE_URL}/uploads/${filename}`) : [],
-    ownerSignature: updatedReport.ownerSignature ? `${API_BASE_URL}/uploads/${updatedReport.ownerSignature}` : undefined,
-    technicianSignature: updatedReport.technicianSignature ? `${API_BASE_URL}/uploads/${updatedReport.technicianSignature}` : undefined,
+    photos: updatedReport.photos ? updatedReport.photos.map((filename: string) => `${API_BASE_URL}/uploads/${filename.split('/').pop()}`) : [],
+    ownerSignature: updatedReport.ownerSignature ? `${API_BASE_URL}/uploads/${updatedReport.ownerSignature.split('/').pop()}` : undefined,
+    technicianSignature: updatedReport.technicianSignature ? `${API_BASE_URL}/uploads/${updatedReport.technicianSignature.split('/').pop()}` : undefined,
     dataAiHint: updatedReport.dataAiHint ?? '',
   };
 }

@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'FleetWatch Admin Dashboard',
+  title: 'OnMechanics Admin Dashboard',
   description: 'Manage vehicle reports efficiently with FleetWatch.',
 };
 

@@ -23,10 +23,11 @@ export function FleetWatchDashboard() {
   const { toast } = useToast();
 
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
-  const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
   const [previewImageType, setPreviewImageType] = useState<'image' | 'signature' | null>(null);
-  const [isLoadingUpdate, setIsLoadingUpdate] = useState<string | null>(null);
+  const [currentPreviewIndex, setCurrentPreviewIndex] = useState(0);
 
+  const [isLoadingUpdate, setIsLoadingUpdate] = useState<string | null>(null);
 
   const loadReports = useCallback(async () => {
     setIsLoading(true);
@@ -44,6 +45,10 @@ export function FleetWatchDashboard() {
 
   useEffect(() => {
     loadReports();
+    const intervalId = setInterval(() => {
+      loadReports();
+    }, 10000);
+    return () => clearInterval(intervalId);
   }, [loadReports]);
 
   const handleMarkAsAttended = async (reportId: string) => {
@@ -71,11 +76,27 @@ export function FleetWatchDashboard() {
       setIsLoadingUpdate(null);
     }
   };
-  
-  const handlePreviewImage = (url: string, type: 'image' | 'signature') => {
-    setPreviewImageUrl(url);
+
+  const handlePreviewImages = (
+    images: string[],
+    type: 'image' | 'signature',
+    startIndex: number = 0
+  ) => {
+    if (!images.length) return;
+    setPreviewImages(images);
     setPreviewImageType(type);
+    setCurrentPreviewIndex(startIndex);
     setIsPreviewModalOpen(true);
+  };
+
+  const handleNext = () => {
+    setCurrentPreviewIndex((prev) => (prev + 1) % previewImages.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentPreviewIndex((prev) =>
+      prev === 0 ? previewImages.length - 1 : prev - 1
+    );
   };
 
   const renderContent = () => {
@@ -112,7 +133,7 @@ export function FleetWatchDashboard() {
       <VehicleReportTable
         reports={reports}
         onMarkAsAttended={handleMarkAsAttended}
-        onPreviewImage={handlePreviewImage}
+        onPreviewImages={handlePreviewImages}
         isLoadingUpdate={isLoadingUpdate}
       />
     );
@@ -120,10 +141,11 @@ export function FleetWatchDashboard() {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-6 p-6 bg-card rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-3 text-foreground">Filter Reports by Status</h2>
+      <div className="mb-6 p-6 bg-card rounded-lg shadow-md flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-foreground">Online Mechanics</h1>
+        <div>
         <RadioGroup
-          defaultValue="all"
+          value={statusFilter}
           onValueChange={(value: FilterValue) => setStatusFilter(value)}
           className="flex flex-col sm:flex-row gap-4 sm:gap-6"
           aria-label="Filter reports by status"
@@ -141,27 +163,44 @@ export function FleetWatchDashboard() {
             </div>
           ))}
         </RadioGroup>
+        </div>
       </div>
 
       {renderContent()}
 
-      {previewImageUrl && (
+      {isPreviewModalOpen && previewImages.length > 0 && (
         <Dialog open={isPreviewModalOpen} onOpenChange={setIsPreviewModalOpen}>
           <DialogContent className="sm:max-w-[600px] p-0 overflow-hidden">
             <DialogHeader className="p-6 pb-0">
               <DialogTitle className="text-lg">
-                {previewImageType === 'image' ? 'Image Preview' : 'Signature Preview'}
+                {previewImageType === 'image' ? 'Image Preview' : 'Signature Preview'} ({currentPreviewIndex + 1} / {previewImages.length})
               </DialogTitle>
             </DialogHeader>
-            <div className="p-6 pt-2 max-h-[80vh] overflow-y-auto">
+            <div className="p-6 pt-2 max-h-[80vh] overflow-y-auto flex flex-col items-center">
               <Image
-                src={previewImageUrl}
+                src={previewImages[currentPreviewIndex]} // Ya no es necesario modificar la URL
                 alt={previewImageType === 'image' ? 'Fault image preview' : 'Signature preview'}
                 width={previewImageType === 'image' ? 600 : 400}
                 height={previewImageType === 'image' ? 400 : 200}
                 className="rounded-md object-contain mx-auto"
                 data-ai-hint={previewImageType === 'image' ? 'vehicle damage' : 'document signature'}
               />
+              <div className="mt-4 flex justify-between w-full max-w-xs">
+                <button
+                  onClick={handlePrev}
+                  className="inline-flex items-center px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                  aria-label="Previous image"
+                >
+                  ‹ Previous
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="inline-flex items-center px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                  aria-label="Next image"
+                >
+                  Next ›
+                </button>
+              </div>
             </div>
           </DialogContent>
         </Dialog>

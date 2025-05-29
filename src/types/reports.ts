@@ -5,9 +5,15 @@ export interface VehicleReport {
   ownerName: string;
   licensePlate: string;
   faultDescription: string;
-  date: string; // ISO date string
+  date: string; // ISO date string (mapeado desde createdAt)
   status: ReportStatus;
-  imageUrl?: string;
-  signatureUrl?: string;
+  imageUrl?: string; // puedes eliminar este si ya no lo usas
+  signatureUrl?: string; // igual, si ya no lo usas
   dataAiHint?: string;
+
+  // Nuevos campos reales del backend:
+  photos?: string[];
+  ownerSignature?: string;
+  technicianSignature?: string;
 }
+

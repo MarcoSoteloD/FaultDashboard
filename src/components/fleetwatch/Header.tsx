@@ -6,7 +6,7 @@ export function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center">
         <Gauge className="h-8 w-8 text-primary" />
         <h1 className="ml-3 text-2xl font-semibold text-foreground">
-          Fleet<span className="text-primary">Watch</span>
+          On<span className="text-primary">Mechanics</span>
         </h1>
       </div>
     </header>

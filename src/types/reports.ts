@@ -9,4 +9,5 @@ export interface VehicleReport {
   status: ReportStatus;
   imageUrl?: string;
   signatureUrl?: string;
+  dataAiHint?: string;
 }

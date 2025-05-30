@@ -41,6 +41,7 @@ export function VehicleReportTable({
             <TableHead className="w-[150px] hidden md:table-cell">Owner Name</TableHead>
             <TableHead className="w-[120px]">License Plate</TableHead>
             <TableHead>Fault Description</TableHead>
+            <TableHead className="w-[200px] hidden lg:table-cell">Location</TableHead> {/* Nueva columna para Ubicación */}
             <TableHead className="w-[150px] hidden sm:table-cell">Date</TableHead>
             <TableHead className="w-[100px] text-center">Status</TableHead>
             <TableHead className="w-[160px] text-center hidden md:table-cell">Attachments</TableHead>
@@ -63,6 +64,7 @@ export function VehicleReportTable({
                 <TableCell className="font-medium hidden md:table-cell">{report.ownerName}</TableCell>
                 <TableCell>{report.licensePlate}</TableCell>
                 <TableCell>{report.faultDescription}</TableCell>
+                <TableCell className="hidden lg:table-cell">{report.location || 'N/A'}</TableCell> {/* Mostrar la ubicación o N/A si no existe */}
                 <TableCell className="hidden sm:table-cell">{format(new Date(report.date), 'PPpp')}</TableCell>
                 <TableCell className="text-center">
                   <ReportStatusBadge status={report.status} />

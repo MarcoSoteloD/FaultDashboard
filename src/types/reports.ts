@@ -15,5 +15,5 @@ export interface VehicleReport {
   photos?: string[];
   ownerSignature?: string;
   technicianSignature?: string;
+  location?: string | null; // Campo para la ubicación
 }
-

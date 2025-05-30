@@ -27,6 +27,7 @@ export async function fetchVehicleReports(statusFilter?: ReportStatus): Promise<
     photos: r.photos ? r.photos.map((filename: string) => `${API_BASE_URL}/uploads/${filename.split('/').pop()}`) : [],
     ownerSignature: r.ownerSignature ? `${API_BASE_URL}/uploads/${r.ownerSignature.split('/').pop()}` : undefined,
     technicianSignature: r.technicianSignature ? `${API_BASE_URL}/uploads/${r.technicianSignature.split('/').pop()}` : undefined,
+    location: r.location, // Mapear el campo location
     dataAiHint: r.dataAiHint || '',
   }));
 
@@ -61,6 +62,7 @@ export async function updateReportStatus(
     photos: updatedReport.photos ? updatedReport.photos.map((filename: string) => `${API_BASE_URL}/uploads/${filename.split('/').pop()}`) : [],
     ownerSignature: updatedReport.ownerSignature ? `${API_BASE_URL}/uploads/${updatedReport.ownerSignature.split('/').pop()}` : undefined,
     technicianSignature: updatedReport.technicianSignature ? `${API_BASE_URL}/uploads/${updatedReport.technicianSignature.split('/').pop()}` : undefined,
+    location: updatedReport.location, // Mapear el campo location también aquí
     dataAiHint: updatedReport.dataAiHint ?? '',
   };
 }

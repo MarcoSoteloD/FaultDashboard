@@ -38,13 +38,13 @@ export function VehicleReportTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[150px] hidden md:table-cell">Owner Name</TableHead>
+            <TableHead className="w-[150px]">Owner Name</TableHead>
             <TableHead className="w-[120px]">License Plate</TableHead>
             <TableHead>Fault Description</TableHead>
-            <TableHead className="w-[200px] hidden lg:table-cell">Location</TableHead> {/* Nueva columna para Ubicación */}
-            <TableHead className="w-[150px] hidden sm:table-cell">Date</TableHead>
+            <TableHead className="w-[200px]">Location</TableHead>
+            <TableHead className="w-[150px]">Date</TableHead>
             <TableHead className="w-[100px] text-center">Status</TableHead>
-            <TableHead className="w-[160px] text-center hidden md:table-cell">Attachments</TableHead>
+            <TableHead className="w-[160px] text-center">Attachments</TableHead>
             <TableHead className="w-[150px] text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -61,10 +61,10 @@ export function VehicleReportTable({
 
             return (
               <TableRow key={report.id} className="hover:bg-muted/50 transition-colors">
-                <TableCell className="font-medium hidden md:table-cell">{report.ownerName}</TableCell>
+                <TableCell className="font-medium">{report.ownerName}</TableCell>
                 <TableCell>{report.licensePlate}</TableCell>
                 <TableCell>{report.faultDescription}</TableCell>
-                <TableCell className="hidden lg:table-cell">
+                <TableCell>
                   {(() => {
                     if (!report.location) {
                       return 'N/A';
@@ -95,11 +95,11 @@ export function VehicleReportTable({
                     return 'Dato de ubicación inválido'; // Fallback por si la estructura no es la esperada
                   })()}
                 </TableCell>
-                <TableCell className="hidden sm:table-cell">{format(new Date(report.date), 'PPpp')}</TableCell>
+                <TableCell>{format(new Date(report.date), 'PPpp')}</TableCell>
                 <TableCell className="text-center">
                   <ReportStatusBadge status={report.status} />
                 </TableCell>
-                <TableCell className="hidden md:table-cell text-center flex space-x-2">
+                <TableCell className="text-center flex space-x-2">
                   {images.map((imgSrc, idx) => (
                       <ImageThumbnail
                         key={idx}

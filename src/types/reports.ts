@@ -1,5 +1,10 @@
 export type ReportStatus = 'pending' | 'attended';
 
+export interface LocationObject {
+  latitude: number;
+  longitude: number;
+  // address?: string; // Opcional: si tu API también puede enviar una dirección formateada dentro del objeto
+}
 export interface VehicleReport {
   id: string;
   ownerName: string;
@@ -15,5 +20,5 @@ export interface VehicleReport {
   photos?: string[];
   ownerSignature?: string;
   technicianSignature?: string;
-  location?: string | null; // Campo para la ubicación
+  location?: LocationObject | string | null; // Actualizado para aceptar objeto, string o null
 }

@@ -64,7 +64,13 @@ export function VehicleReportTable({
                 <TableCell className="font-medium hidden md:table-cell">{report.ownerName}</TableCell>
                 <TableCell>{report.licensePlate}</TableCell>
                 <TableCell>{report.faultDescription}</TableCell>
-                <TableCell className="hidden lg:table-cell">{report.location || 'N/A'}</TableCell> {/* Mostrar la ubicación o N/A si no existe */}
+                <TableCell className="hidden lg:table-cell">
+                  {report.location ? (
+                    typeof report.location === 'object' ?
+                      `Lat: ${report.location.latitude.toFixed(4)}, Lng: ${report.location.longitude.toFixed(4)}` :
+                      report.location // Es un string, mostrarlo directamente
+                  ) : 'N/A'}
+                </TableCell>
                 <TableCell className="hidden sm:table-cell">{format(new Date(report.date), 'PPpp')}</TableCell>
                 <TableCell className="text-center">
                   <ReportStatusBadge status={report.status} />

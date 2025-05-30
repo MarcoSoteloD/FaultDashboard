@@ -65,11 +65,35 @@ export function VehicleReportTable({
                 <TableCell>{report.licensePlate}</TableCell>
                 <TableCell>{report.faultDescription}</TableCell>
                 <TableCell className="hidden lg:table-cell">
-                  {report.location ? (
-                    typeof report.location === 'object' ?
-                      `Lat: ${report.location.latitude.toFixed(4)}, Lng: ${report.location.longitude.toFixed(4)}` :
-                      report.location // Es un string, mostrarlo directamente
-                  ) : 'N/A'}
+                  {(() => {
+                    if (!report.location) {
+                      return 'N/A';
+                    }
+                    if (
+                      typeof report.location === 'object' &&
+                      typeof report.location.latitude === 'number' &&
+                      typeof report.location.longitude === 'number'
+                    ) {
+                      const lat = report.location.latitude;
+                      const lng = report.location.longitude;
+                      return (
+                        <a
+                          href={`https://www.google.com/maps?q=${lat},${lng}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                          title={`Ver ubicación (${lat.toFixed(4)}, ${lng.toFixed(4)}) en el mapa`}
+                        >
+                          {`Lat: ${lat.toFixed(4)}, Lng: ${lng.toFixed(4)}`}
+                          {/* Alternativa: <span className="underline">Ver en Mapa</span> */}
+                        </a>
+                      );
+                    }
+                    if (typeof report.location === 'string') {
+                      return report.location; // Mostrar el string directamente (ej. dirección)
+                    }
+                    return 'Dato de ubicación inválido'; // Fallback por si la estructura no es la esperada
+                  })()}
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">{format(new Date(report.date), 'PPpp')}</TableCell>
                 <TableCell className="text-center">
